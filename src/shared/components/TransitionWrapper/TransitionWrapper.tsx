@@ -1,24 +1,15 @@
-import { ReactElement } from "react";
-import { motion } from "framer-motion";
-
-const animationConfiguration = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-};
+import { ReactElement, useEffect, useState } from "react";
+import { AnimatedDiv } from "./TransitionWrapper.styles";
 
 const TransitionWrapper: React.FC<{children: ReactElement}> = ({ children }) => {
-    return (
-        <motion.div 
-            variants={animationConfiguration}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.5 }}
-        >
-            {children}
-        </motion.div >
-    );
+    const [inProp, setInProp] = useState(false);
+
+    useEffect(() => {
+        setInProp(true);
+        return () => setInProp(false);
+    }, []);
+
+    return <AnimatedDiv $inProp={inProp}>{children}</AnimatedDiv>;
 };
 
 export default TransitionWrapper;

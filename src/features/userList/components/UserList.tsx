@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Container, Title, SearchInput, Table, Th, Td, DetailsLink } from './UserList.styles';
+import { Container, Title, SearchInput, Table, Th, Td, DetailsLink, TableWrapper } from './UserList.styles';
 import Pagination from '../../../shared/components/Pagination/Pagination';
 import { USERS, USERS_PER_PAGE } from '../constants/users';
 import { SortedField } from '../types/userListTypes';
@@ -57,28 +57,30 @@ const UserList: React.FC = () => {
                         placeholder="Search users by name"
                     />
                 </div>
-                <Table>
-                    <thead>
-                        <tr>
-                            <Th onClick={() => handleSort('name')}>Name {sortField === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : '↑↓'}</Th>
-                            <Th>Email</Th>
-                            <Th onClick={() => handleSort('age')}>Age {sortField === 'age' ? (sortDirection === 'asc' ? '↑' : '↓') : '↑↓'}</Th>
-                            <Th>Actions</Th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedUsers.map(user => (
-                            <tr key={user.id}>
-                                <Td>{user.name}</Td>
-                                <Td>{user.email}</Td>
-                                <Td>{user.age}</Td>
-                                <Td>
-                                    <DetailsLink to={`/user/${user.id}`}>Details</DetailsLink>
-                                </Td>
+                <TableWrapper>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <Th onClick={() => handleSort('name')}>Name {sortField === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : '↑↓'}</Th>
+                                <Th>Email</Th>
+                                <Th onClick={() => handleSort('age')}>Age {sortField === 'age' ? (sortDirection === 'asc' ? '↑' : '↓') : '↑↓'}</Th>
+                                <Th>Actions</Th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {paginatedUsers.map(user => (
+                                <tr key={user.id}>
+                                    <Td>{user.name}</Td>
+                                    <Td>{user.email}</Td>
+                                    <Td>{user.age}</Td>
+                                    <Td>
+                                        <DetailsLink to={`/user/${user.id}`}>Details</DetailsLink>
+                                    </Td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </TableWrapper>
                 <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}

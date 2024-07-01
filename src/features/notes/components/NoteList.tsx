@@ -10,7 +10,9 @@ const NoteList: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const notes = await fetchNotes();
-            setNotes(notes);
+            if(notes) {
+              setNotes(notes);
+            }
         };
         fetchData();
     }, [setNotes]);
@@ -22,8 +24,10 @@ const NoteList: React.FC = () => {
             note: noteInput.trim(),
         };
         const addedNote = await createNote(newNote);
-        addNote(addedNote);
-        setNoteInput('');
+        if(addedNote) {
+          addNote(addedNote);
+          setNoteInput('');
+        }
     };
 
     const handleDeleteNote = async (id: string) => {

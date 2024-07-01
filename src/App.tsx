@@ -1,8 +1,8 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navigation from './shared/components/Navigation/Navigation';
-import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from './shared/components/Theme/Theme';
+import ErrorBoundary from './shared/components/ErrorBoundary/ErrorBoundary';
 
 const Home = lazy(() => import('./features/home/components/Home'));
 const UserList = lazy(() => import('./features/userList/components/UserList'));
@@ -11,10 +11,10 @@ const UserDetails = lazy(() => import('./features/userDetails/components/UserDet
 
 function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <Navigation />
-        <AnimatePresence>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Navigation />
           <Suspense fallback={<div />}>
             <Routes>
               <Route path="/" Component={Home} />
@@ -22,9 +22,9 @@ function App() {
               <Route path="/user/:id" Component={UserDetails} />
             </Routes>
           </Suspense>
-        </AnimatePresence>
-      </BrowserRouter>
-    </ThemeProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
