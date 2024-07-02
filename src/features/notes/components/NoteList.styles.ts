@@ -80,3 +80,25 @@ export const ActionButton = styled.button`
     background-color: ${(props) => props.theme.actionButtonBackgroundHover};
   }
 `;
+
+export const ErrorMessage = styled.div`
+  color: ${(props) => props.theme.errorText};
+  background-color: ${(props) => props.theme.errorBackground};
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+`;
+
+export const LoadingMessage = styled.div`
+  color: ${(props) => props.theme.loadingText};
+  background-color: ${(props) => props.theme.loadingBackground};
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+`;

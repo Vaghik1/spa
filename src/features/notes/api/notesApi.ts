@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Note } from '../store/useNoteListStore';
+import { Note } from '../../types/NoteTypes';
 
-const API_URL = `${process.env.REACT_APP_API_HOST}/notes2`;
+const API_URL = `${process.env.REACT_APP_API_HOST}/notes`;
 
 export const fetchNotes = async (): Promise<Note[] | undefined> => {
     try {

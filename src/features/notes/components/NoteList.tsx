@@ -1,39 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { useNoteListStore } from '../store/useNoteListStore';
-import { fetchNotes, createNote, deleteNote } from '../services/noteListService';
-import { Container, Title, InputContainer, Input, AddButton, NoteContainer, NoteItem, NoteText, ActionButton } from './NoteList.styles';
+import React, { useState } from 'react';
+import { fetchNotes, createNote, deleteNote } from '../api/notesApi';
+import { Container, Title, InputContainer, Input, AddButton, NoteContainer, NoteItem, NoteText, ActionButton, ErrorMessage, LoadingMessage } from './NoteList.styles';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+const queryKey = 'todos';
 
 const NoteList: React.FC = () => {
-    const { notes, setNotes, addNote, removeNote } = useNoteListStore();
+    const queryClient = useQueryClient();
     const [noteInput, setNoteInput] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const notes = await fetchNotes();
-            if(notes) {
-              setNotes(notes);
-            }
-        };
-        fetchData();
-    }, [setNotes]);
+    const {data: notes, error, isLoading} = useQuery({ queryKey: [queryKey], queryFn: fetchNotes });
+    const postMutation = useMutation({
+        mutationFn: createNote,
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [queryKey] });
+          setNoteInput('');
+        },
+    });
+    const deleteMutation = useMutation({
+        mutationFn: deleteNote,
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [queryKey] });
+        },
+    });
 
     const handleAddNote = async (event: React.FormEvent) => {
         event.preventDefault();
         if (noteInput.trim() === '') return;
-        const newNote = {
+        postMutation.mutate({
             note: noteInput.trim(),
-        };
-        const addedNote = await createNote(newNote);
-        if(addedNote) {
-          addNote(addedNote);
-          setNoteInput('');
-        }
+        });
     };
 
     const handleDeleteNote = async (id: string) => {
-        await deleteNote(id);
-        removeNote(id);
+        deleteMutation.mutate(id);
     };
+
+    if(error) {
+        return <ErrorMessage>Something went wrong</ErrorMessage>;
+    }
+
+    if(isLoading) {
+        return <LoadingMessage>Loading...</LoadingMessage>
+    }
 
     return (
         <Container>
@@ -50,7 +58,7 @@ const NoteList: React.FC = () => {
                 </InputContainer>
             </form>
             <NoteContainer>
-                {notes.map(note => (
+                {notes?.map(note => (
                     <NoteItem key={note.id}>
                         <NoteText>{note.note}</NoteText>
                         <ActionButton onClick={() => handleDeleteNote(note.id)}>Delete</ActionButton>
