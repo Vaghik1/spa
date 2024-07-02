@@ -564,11 +564,6 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
-      isEnvProduction && new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: true,
-        reportFilename: 'bundle-report.html',
-      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

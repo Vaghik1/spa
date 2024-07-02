@@ -71,7 +71,8 @@
   "scripts": {
     "start": "concurrently \"PORT=8080 node scripts/start.js\" \"npx json-server --watch db.json\"",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "bundle-analyze": "cross-env NODE_ENV=production webpack --config config/webpack.analyze.js"
   },
   "eslintConfig": {
     "extends": [
@@ -93,7 +94,9 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "cross-env": "^7.0.3",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^5.1.4"
   },
   "jest": {
     "roots": [
