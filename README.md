@@ -42,6 +42,7 @@ src/
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Run the development server: `npm start`
+4. Access the application at http://localhost:8080/
 4. Build for production: `npm run build`
 4. Bundle analyze: `npm run bundle-analyze`
 
